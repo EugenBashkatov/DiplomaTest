@@ -4,6 +4,7 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import pandas as pd
 import numpy as np
+import  xlsxwriter
 
 
 def print_hi(name):
@@ -52,9 +53,21 @@ for x0 in range(0, 364):
              print("Видно ", cur_x)
              x1 = cur_x
              graph_array[x0][cur_x] = 1
+             # graph_array[x0][cur_x-1] = 1
              graph_array[cur_x][x0] = 1
+             # graph_array[cur_x-1][x0] = 1
             # print(cur_x)
 
 print(graph_array)
 print(graph_array[362])
 print(graph_array[325])
+
+eOutput = pd.DataFrame(graph_array)
+writer = pd.ExcelWriter('ArrayFromPycharm.xlsx', engine='xlsxwriter')
+
+# Convert the dataframe to an XlsxWriter Excel object.
+eOutput.to_excel(writer, sheet_name='Sheet1', index=False)
+
+# Close the Pandas Excel writer and output the Excel file.
+writer.save()
+
