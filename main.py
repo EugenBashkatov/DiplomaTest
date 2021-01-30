@@ -73,14 +73,6 @@ for x0 in range(0, max_dim):
                     x1=cur_x
                     print("New Range_cur_x=",my_range_cur_x)
                     break
-        # if par_line < par_y:
-        #      print("Видно ", cur_x)
-        #      x1 = cur_x
-        #      graph_array[x0][cur_x] = 1
-        #      # graph_array[x0][cur_x-1] = 1
-        #      graph_array[cur_x][x0] = 1
-        #      # graph_array[cur_x-1][x0] = 1
-        #     # print(cur_x)
 
 print(graph_array)
 #print(graph_array[362])
