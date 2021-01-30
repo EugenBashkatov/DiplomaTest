@@ -32,7 +32,7 @@ def line(x0,x1,x):
     k = (y1 - y0) / (x1 - x0)
     B = (x1 * y0 - x0 * y1) / (x1 - x0)
     eps=1.e-3
-    return k * x + B
+    return [k,B,k * x + B,(k * x + B-data_list[x][1]) <= 0]
 
 def is_visible(x0,x1,x):
     y0 = data_list[x0][1]
@@ -48,6 +48,9 @@ graph_array = np.eye(9)
 iv=is_visible(0,1,2)
 x1 = 1
 max_dim=8
+
+print("******",line(0,1,1)[0],line(0,1,1)[1],line(0,1,1)[2],line(0,1,2)[3])
+exit()
 for x0 in range(0, max_dim):
 
     for x1 in range(x0+1, max_dim-1):
@@ -68,7 +71,7 @@ for x0 in range(0, max_dim):
                     my_range_cur_x=range(cur_x+1,max_dim-1)
                     x1=cur_x
                     print("New Range_cur_x=",my_range_cur_x)
-                    continue
+                    break
         if par_line < par_y:
              print("Видно ", cur_x)
              x1 = cur_x
