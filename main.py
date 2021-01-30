@@ -43,17 +43,18 @@ def is_visible(x0,x1,x):
     eps=1.e-3
     return (k * x + B-data_list[x][1]) <= 0
 
-
-graph_array = np.eye(9)
+max_dim=9
+graph_array = np.eye(max_dim)
 iv=is_visible(0,1,2)
 x1 = 1
-max_dim=8
+
 
 print("******",line(0,1,1)[0],line(0,1,1)[1],line(0,1,1)[2],line(0,1,2)[3])
-exit()
+# exit()
+my_range_x0=range(0,max_dim-1)
 for x0 in range(0, max_dim):
 
-    for x1 in range(x0+1, max_dim-1):
+    for x1 in range(x0+1, max_dim-2):
         my_range_cur_x=range(x1,max_dim-1)
 
         for cur_x in my_range_cur_x:
@@ -72,14 +73,14 @@ for x0 in range(0, max_dim):
                     x1=cur_x
                     print("New Range_cur_x=",my_range_cur_x)
                     break
-        if par_line < par_y:
-             print("Видно ", cur_x)
-             x1 = cur_x
-             graph_array[x0][cur_x] = 1
-             # graph_array[x0][cur_x-1] = 1
-             graph_array[cur_x][x0] = 1
-             # graph_array[cur_x-1][x0] = 1
-            # print(cur_x)
+        # if par_line < par_y:
+        #      print("Видно ", cur_x)
+        #      x1 = cur_x
+        #      graph_array[x0][cur_x] = 1
+        #      # graph_array[x0][cur_x-1] = 1
+        #      graph_array[cur_x][x0] = 1
+        #      # graph_array[cur_x-1][x0] = 1
+        #     # print(cur_x)
 
 print(graph_array)
 #print(graph_array[362])
