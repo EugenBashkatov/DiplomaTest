@@ -17,7 +17,7 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-df = pd.read_csv('daily-min-temperatures-01.csv',
+df = pd.read_csv('daily-min-temperatures-02.csv',
                  names=['Date', 'MinTemp', 'RayFrom', 'RayTo', 'dx', 'dy', 'K', 'B', 'FLiine'])
 data_list = df.to_numpy()
 
@@ -25,30 +25,50 @@ data_list = df.to_numpy()
 # Cov = pd.read_csv("path/to/file.txt",
 #                 sep='\t',
 #                names=["Sequence", "Start", "End", "Coverage"])
-def line(x0, x1, x):
-    y0 = data_list[0][1]
-    y1 = data_list[1][1]
+def line(x0,x1,x):
+    y0 = data_list[x0][1]
+    y1 = data_list[x1][1]
 
     k = (y1 - y0) / (x1 - x0)
     B = (x1 * y0 - x0 * y1) / (x1 - x0)
+    eps=1.e-3
     return k * x + B
 
+def is_visible(x0,x1,x):
+    y0 = data_list[x0][1]
+    y1 = data_list[x1][1]
 
-graph_array = np.eye(364)
+    k = (y1 - y0) / (x1 - x0)
+    B = (x1 * y0 - x0 * y1) / (x1 - x0)
+    eps=1.e-3
+    return (k * x + B-data_list[x][1]) <= 0
 
+
+graph_array = np.eye(9)
+iv=is_visible(0,1,2)
 x1 = 1
-for x0 in range(0, 364):
-    # x0 = 0
-    # print("X0=",x0)
+max_dim=8
+for x0 in range(0, max_dim):
 
-    for cur_x in range(x1+1, 364):
-        # print("xur_x=",)
-        # par_line = line(x0, x1, cur_x)
-        # par_y = data_list[cur_x][1]
-        # print(par_line, " ", par_y)
-        par_line = line(x0,x1,cur_x)
-        par_y = data_list[cur_x][1]
-        print("x0 = ",x0," x1= ",x1," c2ur_x = ", cur_x," par_line = ",par_line, " par_y = ",par_y)
+    for x1 in range(x0+1, max_dim-1):
+        my_range_cur_x=range(x1,max_dim-1)
+
+        for cur_x in my_range_cur_x:
+            par_line = line(x0,x1,cur_x)
+            par_y = data_list[cur_x][1]
+            print("Analyse cur_x=",cur_x)
+            num_visible = 0
+            if is_visible(x0,x1,cur_x):
+                num_visible += 1
+                print("Видно {0} из {1} через ({2},{3}) num {4}".format(cur_x,x0,x0,x1,num_visible))
+                print("x0 = ", x0, " x1= ", x1, " cur_x = ", cur_x, " par_line = ", par_line, " par_y = ", par_y," ",is_visible(x0,x1,cur_x))
+                graph_array[x0][cur_x] = 1
+                graph_array[cur_x][x0] = 1
+                if num_visible>0:
+                    my_range_cur_x=range(cur_x+1,max_dim-1)
+                    x1=cur_x
+                    print("New Range_cur_x=",my_range_cur_x)
+                    continue
         if par_line < par_y:
              print("Видно ", cur_x)
              x1 = cur_x
@@ -59,8 +79,8 @@ for x0 in range(0, 364):
             # print(cur_x)
 
 print(graph_array)
-print(graph_array[362])
-print(graph_array[325])
+#print(graph_array[362])
+#print(graph_array[325])
 
 eOutput = pd.DataFrame(graph_array)
 writer = pd.ExcelWriter('ArrayFromPycharm.xlsx', engine='xlsxwriter')
