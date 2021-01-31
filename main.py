@@ -62,12 +62,14 @@ for x0 in range(0, max_dim):
             par_y = data_list[cur_x][1]
             print("Analyse cur_x=",cur_x)
             num_visible = 0
+
             if is_visible(x0,x1,cur_x):
                 num_visible += 1
                 print("Видно {0} из {1} через ({2},{3}) num {4}".format(cur_x,x0,x0,x1,num_visible))
                 print("x0 = ", x0, " x1= ", x1, " cur_x = ", cur_x, " par_line = ", par_line, " par_y = ", par_y," ",is_visible(x0,x1,cur_x))
                 graph_array[x0][cur_x] = 1
                 graph_array[cur_x][x0] = 1
+
                 if num_visible>0:
                     my_range_cur_x=range(cur_x+1,max_dim-1)
                     x1=cur_x
