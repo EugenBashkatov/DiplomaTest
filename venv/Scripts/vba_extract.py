@@ -1,4 +1,4 @@
-#!e:\diplomatest1\venv\scripts\python.exe
+#!e:\diplomatest\venv\scripts\python.exe
 
 ##############################################################################
 #
